@@ -9,36 +9,44 @@
                     <div class="panel-body p-3">
                         <form [formGroup]= "signForm">
                             <div class="form-group pt-3">
-                                <div class="input-field" [class.error]= "signForm.controls['username'].dirty && signForm.hasError('required', 'username')">
+                                <div class="input-field" [class.error]= "signForm.controls['username'].dirty && signForm.hasError('required', 'username') || signForm.hasError('minlength', 'username')">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="username"  type="text" placeholder="Username">
                                 </div>
                             </div>
-                            <small *ngIf= "signForm.controls['username'].dirty && signForm.hasError('required', 'username')" class="text-danger">*Username is required</small>
+                            <small *ngIf= "signForm.controls['username'].dirty && signForm.hasError('required', 'username')" class="text-danger">*Username is required!</small>
+                            <small *ngIf= "f['username'].getError('minlength')!=null"   class="text-danger">*Username should be at least 6 letters!</small>
+
                             <div class="form-group pt-3">
-                                <div class="input-field" [class.error]= "signForm.controls['email'].dirty && signForm.hasError('required', 'email')">
+                                <div class="input-field" [class.error]= "signForm.controls['email'].dirty && signForm.hasError('required', 'email') || f['email'].getError('pattern')!=null">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="email"  type="text" placeholder="Email">
                                 </div>
                             </div>
-                            <small *ngIf= "signForm.controls['email'].dirty && signForm.hasError('required', 'email')" class="text-danger">*Email is required</small>
+                            <small *ngIf= "signForm.controls['email'].dirty && signForm.hasError('required', 'email')" class="text-danger">*Email is required!</small>
+                            <small *ngIf= "f['email'].getError('pattern')!=null" class="text-danger">*Invalid email!</small>
+
                             <div class="form-group pt-3 ">
-                                <div class="input-field" [class.error]= "signForm.controls['password'].dirty && signForm.hasError('required', 'password')">
+                                <div class="input-field" [class.error]= "signForm.controls['password'].dirty && signForm.hasError('required', 'password') || signForm.hasError('MustMatchPassword', 'confirmPassword') || f['password'].getError('minlength')!=null || f['password'].getError('pattern')!=null ">
                                     <span class="fa fa-lock p-2"></span>
                                     <input formControlName="password"  [type]= "typeForFirst" placeholder="Password">
                                     <span (click)= "hideShowPassForFirst()" class="fa {{eyeIconForFirst}}"></span>
                                 </div>
                             </div>
-                            <small *ngIf= "signForm.controls['password'].dirty && signForm.hasError('required', 'password')" class="text-danger">*Password is required</small>
+                            <small *ngIf= "signForm.controls['password'].dirty && signForm.hasError('required', 'password')" class="text-danger">*Password is required!</small>
+                           
+                            
                             <div class="form-group pt-3">
-                                <div class="input-field" [class.error]= "signForm.controls['confirmPassword'].dirty && signForm.hasError('required', 'confirmPassword')">
+                                <div class="input-field" [class.error]= "signForm.controls['confirmPassword'].dirty && signForm.hasError('required', 'confirmPassword') || signForm.hasError('MustMatchPassword', 'confirmPassword')">
                                     <span class="fa fa-lock p-2"></span>
                                     <input formControlName="confirmPassword"  [type]= "typeForSecond" placeholder="Confirm Password">
                                     <span (click)= "hideShowPassForSecond()" class="fa {{eyeIconForSecond}}"></span>
                                 </div>
                             </div>
-                            <small *ngIf= "signForm.controls['confirmPassword'].dirty && signForm.hasError('required', 'confirmPassword')" class="text-danger">*Password is required</small>
-
+                            <small *ngIf= "signForm.controls['confirmPassword'].dirty && signForm.hasError('required', 'confirmPassword')" class="text-danger">*Confirm Password is required</small>
+                            <small *ngIf= "f['confirmPassword'].getError('MustMatchPassword')!=null" class="text-danger">*Passwords are mismatched!</small><br>
+                            <small *ngIf= "f['password'].getError('minlength')!=null || f['password'].getError('pattern')!=null"   class="text-danger">*Password should be at least 8 letters, one upper letter and one special sign!</small>
+                           
                             <button (click)= "onSumbit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">Sign Up</button>
                             <div class="text-center pt-4 text-muted">Already have account? <a id="forget" routerLink="/login">Login</a></div>
                         </form>

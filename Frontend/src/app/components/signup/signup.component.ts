@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import{FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import{FormBuilder, FormGroup, Validators, FormControl, AbstractControl} from '@angular/forms';
+import { TitleStrategy } from '@angular/router';
 import ValidateForm from 'src/app/helpers/validateform';
 @Component({
   selector: 'app-signup',
@@ -14,17 +15,49 @@ export class SignupComponent implements OnInit {
   eyeIconForFirst: string ="fa-eye-slash"
   eyeIconForSecond: string ="fa-eye-slash"
   signForm!: FormGroup;
-  constructor(private fb:FormBuilder) { }
-
+  validRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  
+  constructor(private fb:FormBuilder) {
+    
+  }
+ 
   ngOnInit(): void {
     this.signForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
+      username: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
+      email: ['', Validators.compose([Validators.required, Validators.pattern(this.validRegex)])],
+    password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*"]).{8,}')])],
+      confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(8)])]
 
+    },{
+      validators:this.MustMatchPassword('password','confirmPassword')
     })
   }
+
+  get f()
+  {
+    return this.signForm.controls;
+  }
+
+  MustMatchPassword(password:any, confirmPassword:any)
+  {
+    return(formGroup:FormGroup)=>{
+      const passwordControl= formGroup.controls[password];
+      const confirmPasswordControl= formGroup.controls[confirmPassword];
+
+      if(confirmPasswordControl.errors && !confirmPasswordControl.errors['MustMatchPassword']){
+        return;
+      }
+
+      if(passwordControl.value !== confirmPasswordControl.value)
+      {
+        confirmPasswordControl.setErrors({MustMatchPassword:true});
+      }
+      else{
+        confirmPasswordControl.setErrors(null);
+      }
+    };
+  }
+
   hideShowPassForFirst()
   {
     this.isTextForFirst = !this.isTextForFirst;
@@ -37,9 +70,12 @@ export class SignupComponent implements OnInit {
     this.isTextForSecond ? this.eyeIconForSecond = "fa-eye" : this.eyeIconForSecond ="fa-eye-slash";
     this.isTextForSecond ? this.typeForSecond = "text" : this.typeForSecond = "password";
   }
-
+ 
+  
+  
   onSumbit()
   {
+    
     if(this.signForm.valid){
 
       console.log(this.signForm.value);
@@ -49,7 +85,7 @@ export class SignupComponent implements OnInit {
     else{
       //throw the error using toaster and with required fields
       ValidateForm.validateAllFormFields(this.signForm);
-      alert("Your form is invalid");
+      alert("wrong");
     }
   }
 
