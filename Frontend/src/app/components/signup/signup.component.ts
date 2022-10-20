@@ -26,7 +26,7 @@ export class SignupComponent implements OnInit {
     this.signForm = this.fb.group({
       username: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.validRegex)])],
-    password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*"]).{8,}')])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*"]).{8,}')])],
       confirmPassword: ['', Validators.compose([Validators.required,Validators.minLength(8)])]
 
     },{
