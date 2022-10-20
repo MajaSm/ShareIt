@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import{FormBuilder, FormGroup, Validators, FormControl, AbstractControl} from '@angular/forms';
-import { TitleStrategy } from '@angular/router';
+import { Route, Router, TitleStrategy } from '@angular/router';
 import ValidateForm from 'src/app/helpers/validateform';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -16,8 +17,8 @@ export class SignupComponent implements OnInit {
   eyeIconForSecond: string ="fa-eye-slash"
   signForm!: FormGroup;
   validRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  
-  constructor(private fb:FormBuilder) {
+
+  constructor(private fb:FormBuilder, private auth:AuthService, private router: Router) {
     
   }
  
@@ -26,7 +27,7 @@ export class SignupComponent implements OnInit {
       username: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.validRegex)])],
     password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*"]).{8,}')])],
-      confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(8)])]
+      confirmPassword: ['', Validators.compose([Validators.required,Validators.minLength(8)])]
 
     },{
       validators:this.MustMatchPassword('password','confirmPassword')
@@ -77,15 +78,26 @@ export class SignupComponent implements OnInit {
   {
     
     if(this.signForm.valid){
-
       console.log(this.signForm.value);
       //send the obj to database
-
+      this.auth.signUp(this.signForm.value)
+      .subscribe({
+        next:(res=>{
+          alert(res.message);
+          this.signForm.reset();
+          this.router.navigate(['login']);
+        }),
+        error:(err=>{
+          alert(err?.error.message);
+          
+        })
+      })
     }
+
     else{
       //throw the error using toaster and with required fields
       ValidateForm.validateAllFormFields(this.signForm);
-      alert("wrong");
+      
     }
   }
 
