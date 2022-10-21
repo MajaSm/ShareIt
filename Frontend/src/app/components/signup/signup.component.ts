@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import{FormBuilder, FormGroup, Validators, FormControl, AbstractControl} from '@angular/forms';
 import { Route, Router, TitleStrategy } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import ValidateForm from 'src/app/helpers/validateform';
 import { AuthService } from 'src/app/services/auth.service';
 @Component({
@@ -17,8 +18,8 @@ export class SignupComponent implements OnInit {
   eyeIconForSecond: string ="fa-eye-slash"
   signForm!: FormGroup;
   validRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-  constructor(private fb:FormBuilder, private auth:AuthService, private router: Router) {
+  
+  constructor(private fb:FormBuilder, private auth:AuthService, private router: Router, private toast:NgToastService) {
     
   }
  
@@ -83,13 +84,12 @@ export class SignupComponent implements OnInit {
       this.auth.signUp(this.signForm.value)
       .subscribe({
         next:(res=>{
-          alert(res.message);
+          this.toast.success({detail:"Success Message", summary:res.message, duration: 5000});
           this.signForm.reset();
           this.router.navigate(['login']);
         }),
         error:(err=>{
-          alert(err?.error.message);
-          
+          this.toast.error({detail:"Error Message", summary:err?.error.message, duration: 5000});
         })
       })
     }

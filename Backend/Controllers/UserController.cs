@@ -24,13 +24,17 @@ namespace ShareIt.Controllers
             {
                 return BadRequest();
             }
-            var user = await _authContext.Users.FirstOrDefaultAsync(x=>x.Email == userObj.Email && x.Password == userObj.Password);
+            var user = await _authContext.Users.FirstOrDefaultAsync(x => x.Email == userObj.Email); 
             if (user == null)
                 return NotFound(new { Message = "User Not Found!" });
-            return Ok(new
+            if (PasswordHasher.VerifyPassword(userObj.Password, user.Password))
             {
-                Message = "Login Success"
-            });
+                return Ok(new
+                {
+                    Message = "Login Success"
+                });
+            }
+            return BadRequest("Invalid email or pass");
         }
 
         [HttpPost("register")]
