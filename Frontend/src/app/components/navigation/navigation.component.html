@@ -1,3 +1,4 @@
+<div *ngIf='isNavBarVisible'>
 <div class ="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
     <div class ="logo-container">
         <button class="logo" (click)="toggleCollapse()">S</button>
@@ -15,4 +16,5 @@
             </a>
         </li>
     </ul>
+</div>
 </div>

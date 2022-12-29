@@ -15,6 +15,7 @@ import { SettingsComponent } from './components/logedinHomePage/settings/setting
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { BodyComponent } from './components/logedinHomePage/body/body.component';
 import { TasksComponent } from './components/logedinHomePage/tasks/tasks.component';
+import { NavBarTopComponent } from './components/nav-bar-top/nav-bar-top.component';
 
 
 
@@ -31,7 +32,8 @@ import { TasksComponent } from './components/logedinHomePage/tasks/tasks.compone
     SettingsComponent,
     NavigationComponent,
     BodyComponent,
-    TasksComponent
+    TasksComponent,
+    NavBarTopComponent
   
   ],
   imports: [

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-body',
@@ -9,16 +10,21 @@ export class BodyComponent implements OnInit {
 
   @Input() collapsed = false;
   @Input() screenWidth = 0;
+  @Input() isNavBarVisible = true;
 
-  constructor() { }
-
+  constructor(){}
   ngOnInit(): void {
   }
 
   getBodyClass(): string
   {
     let styleClass = '';
-    if(this.collapsed && this.screenWidth > 786)
+
+    if(!this.isNavBarVisible)
+    {
+      styleClass = 'body-hidden'
+    }
+    else if(this.collapsed && this.screenWidth > 786)
     {
       styleClass = 'body-trimmed'
     }

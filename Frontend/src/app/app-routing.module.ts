@@ -7,6 +7,7 @@ import { SettingsComponent } from './components/logedinHomePage/settings/setting
 import { StatisticsComponent } from './components/logedinHomePage/statistics/statistics.component';
 import { TasksComponent } from './components/logedinHomePage/tasks/tasks.component';
 import { LoginComponent } from './components/login/login.component';
+import { NavBarTopComponent } from './components/nav-bar-top/nav-bar-top.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SignupComponent } from './components/signup/signup.component';
 
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'navigation', component: NavigationComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'settings', component: SettingsComponent},
-  {path: 'tasks', component: TasksComponent}
+  {path: 'tasks', component: TasksComponent},
+  {path: 'navBarTop', component: NavBarTopComponent}
 ];
 
 @NgModule({

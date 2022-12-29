@@ -1,8 +1,11 @@
-<app-navigation (onToggleSideNav)="onToggleSideNav($event)" ></app-navigation>
+<app-nav-bar-top></app-nav-bar-top>
+<app-navigation (onToggleSideNav)="onToggleSideNav($event)" [isNavBarVisible]="isNavBarVisible"></app-navigation>
 <app-body
     [collapsed]="isSideNavCollapsed"
     [screenWidth]="screenWidth"
+    [isNavBarVisible]="isNavBarVisible"
 ></app-body>
 
 <router-outlet></router-outlet>
+
 <lib-ng-toast></lib-ng-toast>

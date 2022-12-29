@@ -1,11 +1,14 @@
 
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { navbarData } from './nav-data';
 
 interface SideNavToggle{
   screenWidth: number;
   collapsed: boolean;
+}
+interface SideNavHidden{
+  navBarVisible: boolean;
 }
 
 @Component({
@@ -17,9 +20,12 @@ interface SideNavToggle{
 export class NavigationComponent implements OnInit {
 
   @Output() onToggleSideNav : EventEmitter<SideNavToggle> = new EventEmitter();
+  @Output() onNavBarVisibilityChanged : EventEmitter<SideNavHidden> = new EventEmitter();
+  @Input() isNavBarVisible = true;
   collapsed = false;
   screenWidth = 0;
   navData = navbarData;
+  Instance : NavigationComponent | undefined;
 
   @HostListener('window:resize', ['$event'])
   onResize(event:any){
@@ -31,13 +37,12 @@ export class NavigationComponent implements OnInit {
     }
   
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
+    this.Instance = this;
     this.screenWidth = window.innerWidth;
   }
-
-  
  
   toggleCollapse() :void
   {
